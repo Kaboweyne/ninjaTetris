@@ -1,0 +1,42 @@
+/*
+ * TCSS 305 - Autumn 2016 Assignment 6a - Tetris
+ */
+package view;
+
+
+import java.awt.EventQueue;
+
+
+/**
+ * The main class of this program.
+ * The purpose of this class is to kick start the GUI.
+ * @author Mahad Fahiye
+ * @version 12.3.2016.1
+ */
+public final class GUI {
+    /**
+     * The private constructor of this class.
+     * Since this is a utility class, I don't want it to be instantiated.
+     */
+    private GUI() { }
+    /**
+     * Main method for this program.
+     * @param theArgs the arguments passed in if its ran at the command line.
+     * 
+     * 
+     */
+    public static void main(final String[] theArgs) {
+        EventQueue.invokeLater(new Runnable() {
+
+            @Override
+            public void run() {
+
+                final GamePanel gamePanel = new GamePanel();
+                gamePanel.setUp();
+
+            }
+
+        });
+    }
+
+}

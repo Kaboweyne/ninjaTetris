@@ -1,0 +1,155 @@
+package view;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.ButtonGroup;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JColorChooser;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JRadioButtonMenuItem;
+
+public class MenuBar extends JMenuBar {
+    private final static int MEDIUM_MULTIPLIER = 4;
+    private final static int MEDIUM_GAME_SIZE = 10;
+    private final static int LARGE_MULTIPLIER = 9;
+    private final static int LARGE_GAME_SIZE = 20;
+    //private final static int MEDIUM_WIDTH_MULTIPLIER = 
+    private final static boolean [] pauseStatus = {true, false};
+    private int myCount;
+    private JFrame myFrame;
+    private GamePanel myPanel;
+    protected boolean myGameOver;
+    private ScorePanel myScore;
+   
+
+    public MenuBar(final JFrame theFrame, final GamePanel thePanel,
+                   final ScorePanel theScore) {
+        myFrame = theFrame;
+        myPanel = thePanel;
+        myScore = theScore;
+        
+        setUp();
+    }
+    
+    public void setUp() {
+        JMenu optionsMenu = new JMenu("Options");
+        JMenu chooseSize = new JMenu("Choose Size");
+        
+        
+        JMenuItem newGame = new JMenuItem("New Game");
+        JMenuItem pauseGame = new JMenuItem("Pause/Resume");
+        JMenuItem endGame = new JMenuItem("End Game");
+        newGame.setEnabled(false);
+        ButtonGroup choices = new ButtonGroup();
+        
+        JRadioButtonMenuItem smallSize = new JRadioButtonMenuItem("Small");
+        JRadioButtonMenuItem mediumSize = new JRadioButtonMenuItem("Medium");
+        JRadioButtonMenuItem largeSize = new JRadioButtonMenuItem("Large");
+        choices.add(smallSize);
+        choices.add(mediumSize);
+        choices.add(largeSize);
+        smallSize.setSelected(true);
+        
+        
+        
+        pauseGame.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(final ActionEvent theEvent) {
+                
+                
+                if (myCount > 1) {
+                    myCount = 0;
+                }
+                
+                myPanel.isPaused(pauseStatus[myCount]); 
+                myCount++;
+
+            }
+        });
+        
+        newGame.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent theEvent) {
+                
+                myScore.resetScoreBoard();   
+                myPanel.startNewGame(true);
+                myPanel.setGameOver(false);
+                newGame.setEnabled(false);
+                
+                
+                
+            }
+            
+        });
+        
+       
+        endGame.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent theEvent) {
+                newGame.setEnabled(true);
+                myGameOver = true;
+                myPanel.setGameOver(true);
+                //myPanel.setIcon(new ImageIcon("./images/game_over.gif"));
+                
+            
+            }
+            
+        });
+        
+        smallSize.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                myPanel.setSizeChoice("Small", 1, 0);
+                
+            }
+            
+        });
+        
+        mediumSize.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               myPanel.setSizeChoice("Medium", MEDIUM_MULTIPLIER, MEDIUM_GAME_SIZE);
+                
+            }
+            
+        });
+        
+        largeSize.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               myPanel.setSizeChoice("Large", LARGE_MULTIPLIER, LARGE_GAME_SIZE);
+                
+            }
+            
+        });
+        optionsMenu.add(pauseGame);
+        optionsMenu.add(newGame);
+        optionsMenu.add(endGame);
+        
+        chooseSize.add(smallSize);
+        chooseSize.add(mediumSize);
+        chooseSize.add(largeSize);
+        //chooseSize.add(choices)
+        
+       
+        add(optionsMenu);
+        add(chooseSize);
+        myFrame.add(this, BorderLayout.NORTH);
+        
+    }
+
+}

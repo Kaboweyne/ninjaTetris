@@ -1,0 +1,126 @@
+package view;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.util.Observable;
+import java.util.Observer;
+
+import javax.swing.JPanel;
+
+import model.Board;
+
+public class ScorePanel extends JPanel implements Observer {
+    private static final int [] myLines = {4,9,14,19,24,29,30};
+    private int myLinesCleared;
+    private Board myBoard;
+    private GamePanel myPanel;
+    private int myLevel;
+    private int myLinesTillNextLevel;
+    private int myCount;
+    
+    public ScorePanel(Board theBoard, GamePanel thePanel){
+        myBoard = theBoard;
+        myPanel = thePanel;
+        myLinesCleared = 0;
+        myLevel = 1;
+        setPreferredSize(new Dimension(100,200));
+        this.setBackground(new Color(133,117,77,65));
+        myBoard.addObserver(this);
+    }
+    
+    @Override
+    public void paintComponent(Graphics theGraphics) {
+        super.paintComponent(theGraphics);
+        final Graphics2D g2 = (Graphics2D) theGraphics;
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                             RenderingHints.VALUE_ANTIALIAS_ON);
+        final int fontsize = 21;
+        g2.setFont(new Font("Marker Felt", Font.BOLD, fontsize));
+        g2.drawString("Lines cleared", 0, 20);
+        g2.drawString(Integer.toString(myLinesCleared), 45, 40);
+        g2.drawString("Level ", 30, 60);
+        g2.drawString(Integer.toString(myLevel), 45, 80);
+        g2.setFont(new Font("Marker Felt", Font.BOLD, 12));
+        g2.drawString("Lines till next level:  " 
+                      + Integer.toString(myLinesTillNextLevel - myLinesCleared), 0, 95);
+        
+        
+    }
+
+    @Override
+    public void update(Observable theO, Object theArg) {
+        myCount ++;
+    if (theArg instanceof Object[]) {
+        myLinesCleared++;
+        if(myLinesCleared > 0 && myLinesCleared <= 4) {
+            myLevel = 1;
+            myLinesTillNextLevel = myLines[myLevel - 1];
+            myPanel.setTimerDelay(600);
+            
+        } else if(myLinesCleared > 4 && myLinesCleared <= 9) {
+            myLevel = 2;
+            myLinesTillNextLevel = myLines[myLevel - 1];
+            myPanel.setTimerDelay(500);
+        } else if(myLinesCleared > 9 && myLinesCleared <= 14) {
+            myLevel = 3;
+            myLinesTillNextLevel = myLines[myLevel - 1];
+            myPanel.setTimerDelay(400);
+        } else if(myLinesCleared > 14 && myLinesCleared <= 19) {
+            myLevel = 4;
+            myLinesTillNextLevel = myLines[myLevel - 1];
+            myPanel.setTimerDelay(200);
+        } else if(myLinesCleared > 19 && myLinesCleared <= 24) {
+            myLevel = 5;
+            myLinesTillNextLevel = myLines[myLevel - 1];
+            myPanel.setTimerDelay(100);
+        } else if(myLinesCleared > 24 && myLinesCleared <= 29) {
+            myLevel = 6;
+            myLinesTillNextLevel = myLines[myLevel - 1];
+            myPanel.setTimerDelay(50);
+        } else if(myLinesCleared > 29) {
+            myLevel = 7;
+            myLinesTillNextLevel = myLines[myLevel - 1];
+            myPanel.setTimerDelay(0);
+        }
+            
+        repaint();
+        
+//        String str = (String) theArg;
+//        int count = 0;
+//        for(int i =0; i < str.length(); i++) {
+//            if(Character.isAlphabetic(str.charAt(i))) {
+//                count ++;
+//            }
+//            if(str.charAt(i) == '\n'){
+//                count = 0;
+//                
+//            }
+//            if(count == 10){
+//                count = 0;
+//                myLinesCleared ++;
+//                System.out.println("Cleared Line");
+//            }
+//        }
+//        repaint();
+//    }
+    }
+    }
+
+    public void resetScoreBoard() {
+        myLevel = 0;
+        myLinesCleared = 0;
+        myLinesTillNextLevel = 0;
+        repaint();
+        
+    }
+
+    }
+       
+        
+  
+
+

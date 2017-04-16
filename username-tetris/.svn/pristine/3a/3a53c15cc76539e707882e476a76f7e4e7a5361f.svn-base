@@ -1,0 +1,624 @@
+/*
+ * TCSS 305 - Autumn 2016 Assignment 6a - Tetris
+ */
+package view;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.RenderingHints;
+import java.awt.TexturePaint;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.util.Observable;
+import java.util.Observer;
+
+import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.Timer;
+import javax.swing.plaf.basic.BasicPanelUI;
+
+import model.Board;
+import model.MovableTetrisPiece;
+import model.TetrisPiece;
+
+/**
+ * The Tetris Game Panel for this program.
+ * 
+ * @author Mahad Fahiye
+ * @version 12.3.2016.1
+ */
+public class GamePanel extends JLabel implements Observer {
+    /**
+     * Serial number for this class. 
+     */
+    private static final long serialVersionUID = -1172487208830731928L;
+    
+    private final static boolean [] pauseStatus = {true, false};
+    
+    private final static File [] SOUND_FILES = new File[42];
+    
+    /** The red component of the block Color. */
+    private static final int BLOCK_RED = 255;
+
+    /** The green component of the block Color. */
+    private static final int BLOCK_GREEN = 165;
+
+    /** The blue component of the block Color. */
+    private static final int BLOCK_BLUE = 0; 
+    
+    /** The transparency of the block Color. */
+    private static final int BLOCK_TRANSPERENCY = 111; 
+    
+    /** The red component of the "UW purple" Color. */
+    private static final int UW_RED = 75;
+
+    /** The green component of the "UW purple" Color. */
+    private static final int UW_GREEN = 46;
+
+    /** The blue component of the "UW purple" Color. */
+    private static final int UW_BLUE = 131;
+
+    /** The red component of the "UW Gold" Color. */
+    private static final int UWG_RED = 183;
+
+    /** The green component of the "UW Gold" Color. */
+    private static final int UWG_GREEN = 165;
+
+    /** The blue component of the "UW Gold" Color. */
+    private static final int UWG_BLUE = 122;
+
+    /**
+     * The timer delay.
+     */
+    private static final int DELAY = 1000;
+
+    /**
+     * The height of the game panel.
+     */
+    private static final int HEIGHT = 100;
+
+    /**
+     * The width of the game panel.
+     */
+    private static final int WIDTH = 200;
+
+    /**
+     * The width of the frame.
+     */
+    private static final int FRAME_WIDTH = 400;
+
+    /**
+     * The height of the frame.
+     */
+    private static final int FRAME_HEIGHT = 245;
+
+    /**
+     * The size of each Tetris block.
+     */
+    private static final int BLOCK_SIZE = 10;
+    /**
+     * The Frame that will hold all the components.
+     */
+    private Background myFrame;
+    /**
+     * The Board Object that I will be using to in this class.
+     */
+    private Board myBoard;
+
+    /**
+     * The color of the Tetris shapes.
+     */
+    private Color myColor;
+
+    /**
+     * The timer that I will use to make the Tetris pieces drop.
+     */
+    private Timer myTimer;
+    /**
+     * The x counter to keep track of the x coordinate of the Tetris piece.
+     */
+    private int myXCount;
+
+    /**
+     * The y counter to keep track of the y coordinate of the Tetris piece.
+     */
+    private int myYCount;
+
+    /**
+     * The Next piece panel object that will be used for reference.
+     */
+    private NextPiece myNextPiecePanel;
+
+    /**
+     * UW GOLD color that will be used for the background color of the panel.
+     */
+    private Color myGoldColor;
+
+    /**
+     * Boolean for storing whether the game is over or not.
+     */
+    private boolean myGameOver;
+
+    private Image myBackground;
+
+    private BufferedImage myImage;
+
+    private boolean myGamePaused;
+
+    private boolean myNewGame;
+
+    private int myMultiplier;
+
+    private int myGameSize;
+    
+    private DirectionListener myDirectionListener;
+
+    private int myTimerDelay;
+
+    private ScorePanel myScore;
+
+    private String myPanelSize;
+
+    private PauseListener myPauseListener;
+    
+    private Color myBlockColor;
+
+    private Color myTransperentColor;
+
+    private MusicPlayer myPlayer;
+
+    public SoundPlayer mySoundPlayer;
+
+    /**
+     * The constructor for the Game panel.
+     */
+    public GamePanel() {
+        myFrame = new Background();
+       // myFrame.setContentPane(new JLabel(new ImageIcon("./images/sasuke.gif")));
+        //this.setBackground(new Color(0,0,0,30));
+        //this.setOpaque(false);
+        myTransperentColor = new Color(BLOCK_RED,BLOCK_GREEN,BLOCK_BLUE,BLOCK_TRANSPERENCY);
+        myBlockColor = new Color(BLOCK_RED,BLOCK_GREEN,BLOCK_BLUE);
+        myBoard = new Board();
+        myTimer = new Timer(DELAY, new TimerListener());
+        myBoard.newGame();
+        myColor = new Color(UW_RED, UW_GREEN, UW_BLUE);
+        myGoldColor = new Color(UWG_RED, UWG_GREEN, UWG_BLUE);
+        myMultiplier = 1;
+        myDirectionListener = new DirectionListener();
+        myPauseListener = new PauseListener();
+        mySoundPlayer = new SoundPlayer();
+        setPreferredSize(new Dimension(HEIGHT, WIDTH));
+        
+        
+        //setBackground(myGoldColor);
+        //setVisible(true);
+
+    }
+
+    /**
+     * Sets up the game panel.
+     */
+    public void setUp() {
+        //myFrame.setContentPane(new JLabel(new ImageIcon("./images/sasuke.gif")));
+//        try {
+//            myImage = ImageIO.read(new File("sasuke.gif"));
+//        }
+//        catch (IOException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
+      
+        
+        myFrame.setFocusable(true);
+        myFrame.addKeyListener(myDirectionListener);
+        myFrame.addKeyListener(myPauseListener);
+        myTimer.start();
+        myBoard.addObserver(this);
+        this.setBorder(BorderFactory.createEmptyBorder(0,10,10,10));
+
+        //myFrame.setBackground(Color.RED);
+        myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        final JPanel eastPanel = new JPanel();
+        myNextPiecePanel = new NextPiece();
+        final JPanel nextPieceWindow = new JPanel();
+        //nextPieceWindow.setLayout(new BorderLayout());
+        final InstructionsPanel instructions = new InstructionsPanel();
+        nextPieceWindow.setLayout(new GridLayout(2,1));
+        nextPieceWindow.add(myNextPiecePanel);
+        myScore = new ScorePanel(myBoard, this);
+        nextPieceWindow.add(myScore);
+        final JPanel nextPieceWindow2 = new JPanel();
+        //nextPieceWindow2.setLayout(new BorderLayout());
+        //nextPieceWindow2.add(nextPieceWindow, BorderLayout.EAST);
+       // myNextPiecePanel.setAlignmentX(SwingConstants.EAST);
+        //nextPieceWindow.add(myNextPiecePanel, BorderLayout.EAST);
+        nextPieceWindow.setBackground(Color.GRAY);
+        JPanel picturePanel = new JPanel();
+        
+        MenuBar menuBar = new MenuBar(myFrame, this, myScore);
+        myFrame.add(menuBar, BorderLayout.NORTH);
+        
+        picturePanel.setPreferredSize(new Dimension(HEIGHT, WIDTH));
+        
+        
+        Icon icon = new ImageIcon("./images/uwt.jpg");
+        Icon icon2 = new ImageIcon("./images/leaves.gif");
+        
+        final JLabel nextPieceLabel = new JLabel();
+        final JLabel nextPieceLabel2 = new JLabel(icon2);
+        final JLabel nextPieceLabel3 = new JLabel(icon);
+        //picturePanel.setBackground(Color.RED);
+       //picturePanel.add(nextPieceLabel2);
+        this.setIcon(icon2);
+        
+        nextPieceWindow.setBackground(new Color(UWG_RED,UWG_GREEN,UWG_BLUE,100));
+        //this.add(nextPieceLabel2);
+        nextPieceLabel.setText("Next Piece ");
+        final int fontsize = 30;
+        nextPieceLabel.setFont(new Font("Marker Felt", Font.BOLD, fontsize));
+        //nextPieceLabel.setForeground(myColor);
+        //eastPanel.add(nextPieceLabel3);
+        //eastPanel.setBackground(Color.RED);
+        eastPanel.setLayout(new BorderLayout());
+        eastPanel.add(nextPieceWindow, BorderLayout.EAST);
+        //eastPanel.add(instructions);
+        eastPanel.setPreferredSize(new Dimension(300, 200));
+        //eastPanel.setOpaque(true);
+        //eastPanel.setPreferredSize(800, FRAME_HEIGHT);
+        eastPanel.setBackground(new Color(0,0,0,100));
+        myPlayer = new MusicPlayer();
+        for(int i =0; i < SOUND_FILES.length; i++) {
+            SOUND_FILES[i] = new File("sounds/naruto.wav");
+        }
+        myPlayer.newList(SOUND_FILES);
+        myPlayer.play();
+        
+        myBackground = Toolkit.getDefaultToolkit().createImage("uwt.jpg");
+        //this.drawImage(background, 0, 0, null);
+       
+        
+        
+        
+       
+        
+       // this.setUI(new BasicPanelUI());
+        
+        //myFrame.add(this, BorderLayout.WEST);
+        
+        myFrame.add(this, BorderLayout.WEST);
+        myFrame.add(eastPanel, BorderLayout.EAST);
+        myFrame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
+        //myFrame.add(picturePanel, BorderLayout.WEST);
+        myFrame.setLocationRelativeTo(null);
+        myFrame.setVisible(true);
+        
+        myFrame.setIconImage(new ImageIcon("./images/uwt.jpg").getImage());
+       // myFrame.setResizable(false);
+
+    }
+    public void isPaused(boolean theCondition) {
+        
+        myGamePaused = theCondition;
+        
+        
+    }
+    public void startNewGame(boolean theCondition) {
+        myNewGame = theCondition;
+    }
+
+    @Override
+    public void paintComponent(final Graphics theGraphics) {
+        super.paintComponent(theGraphics);
+        final Graphics2D g2 = (Graphics2D) theGraphics;
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                            RenderingHints.VALUE_ANTIALIAS_ON);
+        //this.setBackground(new Color(0,0,0,30));
+        //g2.drawImage(myBackground, 0, 0, null);
+        final String line = myBoard.toString();
+        // the 4 lines before a piece enters the game board.
+        final int ignoredCharecters = 65;
+        myXCount = 0;
+        myYCount = 0;
+        for (int i = ignoredCharecters; i < line.length() - 1; i++) {
+            if (line.charAt(i) == '\n') {
+                myYCount++;
+                myXCount = 0;
+
+            }
+
+            if (line.charAt(i) == ' ') {
+                myXCount++;
+            } else if (Character.isAlphabetic(line.charAt(i))) {
+//                Rectangle2D rect = new Rectangle2D.Double(0, 0, 10, 10);
+//                g2.setPaint(new TexturePaint((BufferedImage) myImage.getScaledInstance(10, 10, 0),rect));
+                if(myGameOver){
+                    g2.setPaint(myTransperentColor);
+                }
+                else{
+                    g2.setPaint(Color.ORANGE);
+                }
+              
+                g2.fillRect(myXCount * (HEIGHT * myMultiplier / (BLOCK_SIZE + myGameSize)),
+                            (myYCount * (WIDTH * myMultiplier / (BLOCK_SIZE + myGameSize))) / 2,
+                            BLOCK_SIZE + myGameSize, BLOCK_SIZE + myGameSize);
+                g2.setPaint(Color.BLACK);
+                g2.drawRect(myXCount * (HEIGHT * myMultiplier / (BLOCK_SIZE + myGameSize)),
+                            (myYCount * (WIDTH * myMultiplier / (BLOCK_SIZE + myGameSize))) / 2,
+                            BLOCK_SIZE + myGameSize, BLOCK_SIZE + myGameSize);
+
+                myXCount++;
+               
+
+            }
+        }
+        if (myGameOver) {
+            repaint();
+            if(myPanelSize == "Large"){
+            this.setIcon(new ImageIcon("./images/gameover_large.gif"));
+            //repaint();
+            } else if(myPanelSize == "Medium") {
+                //this.setPreferredSize(new Dimension(10,500));
+                this.setIcon(new ImageIcon("./images/gameover_medium.gif"));   
+                //this.setPreferredSize(new Dimension(1000,500));
+            } else {
+                this.setIcon(new ImageIcon("./images/game_over.gif"));
+            }
+            myFrame.setTitle("Game Over");
+        } else {
+                if(myPanelSize == "Large"){
+                this.setIcon(new ImageIcon("./images/large_leaves.gif"));
+                //repaint();
+                } else if(myPanelSize == "Medium") {
+                    //this.setPreferredSize(new Dimension(10,500));
+                    this.setIcon(new ImageIcon("./images/leaves_medium.gif"));   
+                    //this.setPreferredSize(new Dimension(1000,500));
+                } else {
+                    this.setIcon(new ImageIcon("./images/leaves.gif"));
+                }
+                myFrame.setTitle("Tetris");
+            }
+            
+//            URL imageLocation = getClass().getResource("game_over.gif");
+//            try {
+//                
+//                myImage = ImageIO.read(imageLocation);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            g2.drawImage(myImage, 3,4,this);
+              //setIcon(new ImageIcon("./images/game_over.gif"));
+
+        
+//       System.out.println(myFrame.getHeight());
+//       System.out.println(myFrame.getWidth());
+
+       
+       
+
+    }
+
+    @Override
+    public void update(final Observable theO, final Object theArg) {
+        System.out.println(myGameOver);
+        if (theArg instanceof MovableTetrisPiece) {
+            //System.out.println(theArg.toString());
+            myNextPiecePanel.setNextPiece(theArg);
+            
+
+        } else if (theArg.equals(true)) {
+            myGameOver = true;
+            
+            
+        } else if (theArg instanceof Object []) {
+            mySoundPlayer.play("./sounds/NarutoLineCleared.wav");
+        }
+
+        repaint();
+        
+    }
+    /**
+     * The Keyboard Listener for this program.
+     * 
+     * @author Mahad Fahiye
+     * @version 12.3.2016.1
+     */
+    private class DirectionListener implements KeyListener {
+
+        @Override
+        public void keyTyped(final KeyEvent theE) {
+            if (theE.getKeyCode() == KeyEvent.VK_RIGHT) {
+                myBoard.right();
+                
+            }
+
+        }
+
+        @Override
+        public void keyPressed(final KeyEvent theE) {
+            if (theE.getKeyCode() == KeyEvent.VK_RIGHT) {
+                myBoard.right();
+                
+                
+                //soundPlayer.preLoad("./sounds/Naruto_move1.wav");
+                mySoundPlayer.play("./sounds/Naruto_move1.wav");
+            }
+            if (theE.getKeyCode() == KeyEvent.VK_LEFT) {
+                myBoard.left();
+                mySoundPlayer.play("./sounds/Naruto_move2.wav");
+                
+            }
+            if (theE.getKeyCode() == KeyEvent.VK_DOWN) {
+                myBoard.down();
+            }
+            if (theE.getKeyCode() == KeyEvent.VK_SPACE) {
+                myBoard.drop();
+                mySoundPlayer.play("./sounds/Naruto_move3.wav");
+            }
+            if (theE.getKeyCode() == KeyEvent.VK_UP) {
+                myBoard.rotate();
+                mySoundPlayer.play("./sounds/Naruto_move3.wav");
+            }
+
+        }
+
+        @Override
+        public void keyReleased(final KeyEvent theE) {
+            // TODO Auto-generated method stub
+            
+        }
+
+    }
+    private class PauseListener implements KeyListener {
+
+        private int myCount;
+
+        @Override
+        public void keyTyped(final KeyEvent theE) {
+            
+           
+
+        }
+
+        @Override
+        public void keyPressed(final KeyEvent theE) {
+            if (theE.getKeyCode() == KeyEvent.VK_P) {
+                
+                if (myCount > 1) {
+                    myCount = 0;
+                    
+                }
+                
+                myGamePaused = pauseStatus[myCount]; 
+                if(!myGamePaused){
+                    myFrame.addKeyListener(myDirectionListener);
+                    } else {
+                myFrame.removeKeyListener(myDirectionListener);
+                    }
+                myCount++;
+            }
+        }
+
+        @Override
+        public void keyReleased(final KeyEvent theE) {
+            // TODO Auto-generated method stub
+            
+        }
+
+    }
+    /**
+     * The Timer Action Listener for this program.
+     * @author Mahad Fahiye
+     * @version 12.3.2016.1
+     */
+    private class TimerListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(final ActionEvent theE) {
+            
+
+            if(!myGamePaused){
+                myBoard.down();
+            }
+            if(myNewGame) {
+                myBoard.newGame();
+                myNewGame = false;
+            }
+            
+            
+
+          
+
+        }
+
+    }
+    public void setSizeChoice(String theSize, int theMultiplier, int theGameSize) {
+       myMultiplier = theMultiplier;
+       myGameSize = theGameSize;
+       myPanelSize = theSize;
+      //setPreferredSize(new Dimension(HEIGHT*(myMultiplier/2), WIDTH *(myMultiplier/2)));
+       if("Medium".equals(theSize)) {
+           setPreferredSize(new Dimension(HEIGHT*(myMultiplier/2), WIDTH *(myMultiplier/2)));
+           final int mediumHeight = 501;
+           final int mediumWidth = 445;
+           myFrame.setSize(mediumHeight, mediumWidth);
+           this.setIcon(new ImageIcon("./images/leaves_medium.gif"));
+           //myFrame.setContentPane(new JLabel(new ImageIcon("./images/hokages_medium.jpg")));
+           
+       }else if("Large".equals(theSize)) {
+           setPreferredSize(new Dimension(HEIGHT*(myMultiplier/3), WIDTH *(myMultiplier/3)));
+           final int largeHeight = 601;
+           final int largeWidth = 645;
+           myFrame.setSize(largeHeight, largeWidth);
+           this.setIcon(new ImageIcon("./images/large_leaves.gif"));
+           
+       } else if("Small".equals(theSize)) {
+//           final int mediumHeight = 501;
+           //final int mediumWidth = 445;
+            myFrame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
+            
+            //myFrame.setChoice("./images/hokages_medium.jpg");
+            //myFrame.crea
+       }
+       
+        
+    }
+    public void setGameOver(boolean theGame) {
+        myGameOver = theGame;
+        //System.out.println(myGameOver);
+        if(myGameOver) {
+
+        myTimer.stop();
+        myFrame.removeKeyListener(myDirectionListener);
+        myFrame.removeKeyListener(myPauseListener);
+        } else {
+            myFrame.addKeyListener(myDirectionListener);
+            myFrame.addKeyListener(myPauseListener);
+            myTimer.start();
+        }
+        
+        
+        
+    }
+    public boolean isGameOver() {
+        return myGameOver;
+    }
+//    public void setbChoice(int theMultiplier, int theGameSize) {
+//        myMultiplier = theMultiplier;
+//        myGameSize = theGameSize;
+//         
+//     }
+
+    public void setTimerDelay(int theTime) {
+        myTimer.setDelay(theTime);
+        // TODO Auto-generated method stub
+        
+    }
+
+}

@@ -1,0 +1,40 @@
+package view;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
+
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+public class Background extends JFrame { 
+    private NextPiece myNextPiecePanel;
+
+    public Background() {
+        setUp();
+    }
+    
+    public void setUp()
+    {
+        setTitle("Tetris");
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+        setContentPane(new JLabel(new ImageIcon("./images/hokages.png")));
+       setLayout(new BorderLayout());
+        
+        
+
+    }
+    public void setChoice(String theChoice) {
+        if("Medium".equals(theChoice)) {
+            setContentPane(new JLabel(new ImageIcon("./images/hokages_medium.jpg")));
+        }
+    }
+
+}

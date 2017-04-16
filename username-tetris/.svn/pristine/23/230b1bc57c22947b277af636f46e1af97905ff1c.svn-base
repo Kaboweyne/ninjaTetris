@@ -1,0 +1,224 @@
+package view;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+
+import javax.swing.JPanel;
+
+import model.MovableTetrisPiece;
+
+public class NextPiece extends JPanel {
+    
+   private MovableTetrisPiece myPiece;
+private static final int BLOCK_SIZE = 20;
+private int myXCount;
+private int myYCount;
+private Color myGoldColor;
+private Color myColor;
+private Color myMetalicColor;
+/** The red component of the "UW Gold" Color. */
+private static final int UWG_RED = 183;
+
+/** The green component of the "UW Gold" Color. */
+private static final int UWG_GREEN = 165;
+
+/** The blue component of the "UW Gold" Color. */
+private static final int UWG_BLUE = 122;
+
+/** The red component of the "UW purple" Color. */
+private static final int UW_RED = 75;
+
+/** The green component of the "UW purple" Color. */
+private static final int UW_GREEN = 46;
+
+/** The blue component of the "UW purple" Color. */
+private static final int UW_BLUE = 131;
+
+/** The red component of the "UW Metalic" Color. */
+private static final int UWM_RED = 133;
+
+/** The green component of the "UW Metalic" Color. */
+private static final int UWM_GREEN = 117;
+
+/** The blue component of the "UW Metalic" Color. */
+private static final int UWM_BLUE = 77;
+
+   public NextPiece() {
+       setPreferredSize(new Dimension(100,100));
+       myGoldColor = new Color(UWG_RED, UWG_GREEN, UWG_BLUE);
+       myColor = new Color(UW_RED, UW_GREEN, UW_BLUE);
+       myMetalicColor = new Color(UWM_RED, UWM_GREEN, UWM_BLUE);
+       setBackground(myGoldColor);
+       
+   }
+   
+    public Graphics2D drawOPiece(Graphics2D theGraphics) {
+        theGraphics.setPaint(myColor);
+        theGraphics.fillRect(20, 20, BLOCK_SIZE, BLOCK_SIZE);
+        theGraphics.fillRect(20 + BLOCK_SIZE, 20, BLOCK_SIZE, BLOCK_SIZE);
+        theGraphics.fillRect(20, 20 + BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+        theGraphics.fillRect(20 +BLOCK_SIZE, 20 + BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+        theGraphics.setColor(myMetalicColor);
+        theGraphics.drawRect(20, 20, BLOCK_SIZE, BLOCK_SIZE);
+        theGraphics.drawRect(20 + BLOCK_SIZE, 20, BLOCK_SIZE, BLOCK_SIZE);
+        theGraphics.drawRect(20, 20 + BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+        theGraphics.drawRect(20 +BLOCK_SIZE, 20 + BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+
+       
+    return theGraphics;
+       
+   }
+    public Graphics2D drawSPiece(Graphics2D theGraphics) {
+        theGraphics.setPaint(myColor);
+        theGraphics.fillRect(20, 20, BLOCK_SIZE, BLOCK_SIZE);
+        theGraphics.fillRect(20 + BLOCK_SIZE, 20, BLOCK_SIZE, BLOCK_SIZE);
+        theGraphics.fillRect(20, 20 + BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+        theGraphics.fillRect(20 -BLOCK_SIZE, 20 + BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+        theGraphics.setColor(myMetalicColor);
+        theGraphics.drawRect(20, 20, BLOCK_SIZE, BLOCK_SIZE);
+        theGraphics.drawRect(20 + BLOCK_SIZE, 20, BLOCK_SIZE, BLOCK_SIZE);
+        theGraphics.drawRect(20, 20 +BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+        theGraphics.drawRect(20 - BLOCK_SIZE, 20 + BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+
+       
+    return theGraphics;
+    }
+    public Graphics2D drawZPiece(Graphics2D theGraphics) {
+        theGraphics.setPaint(myColor);
+        theGraphics.fillRect(20, 20, BLOCK_SIZE, BLOCK_SIZE);
+        theGraphics.fillRect(20 + BLOCK_SIZE, 20, BLOCK_SIZE, BLOCK_SIZE);
+        theGraphics.fillRect(20 +BLOCK_SIZE, 20 + BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+        theGraphics.fillRect(20 +BLOCK_SIZE *2, 20 + BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+        theGraphics.setColor(myMetalicColor);
+        theGraphics.drawRect(20, 20, BLOCK_SIZE, BLOCK_SIZE);
+        theGraphics.drawRect(20 + BLOCK_SIZE, 20, BLOCK_SIZE, BLOCK_SIZE);
+        theGraphics.drawRect(20 +BLOCK_SIZE, 20 +BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+        theGraphics.drawRect(20 +BLOCK_SIZE *2 , 20 + BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+
+       
+    return theGraphics;
+       
+   }
+    
+    public Graphics2D drawIPiece(Graphics2D theGraphics) {
+        theGraphics.setPaint(myColor);
+        theGraphics.fillRect(20, 20, BLOCK_SIZE, BLOCK_SIZE);
+        theGraphics.fillRect(20 + BLOCK_SIZE, 20, BLOCK_SIZE, BLOCK_SIZE);
+        theGraphics.fillRect(20 +BLOCK_SIZE *2, 20, BLOCK_SIZE, BLOCK_SIZE);
+        theGraphics.fillRect(20 +BLOCK_SIZE *3, 20, BLOCK_SIZE, BLOCK_SIZE);
+        theGraphics.setColor(myMetalicColor);
+        theGraphics.drawRect(20, 20, BLOCK_SIZE, BLOCK_SIZE);
+        theGraphics.drawRect(20 + BLOCK_SIZE, 20, BLOCK_SIZE, BLOCK_SIZE);
+        theGraphics.drawRect(20 +BLOCK_SIZE *2, 20, BLOCK_SIZE, BLOCK_SIZE);
+        theGraphics.drawRect(20 +BLOCK_SIZE *3 , 20, BLOCK_SIZE, BLOCK_SIZE);
+
+       
+    return theGraphics;
+       
+   }
+    public Graphics2D drawJPiece(Graphics2D theGraphics) {
+        theGraphics.setPaint(myColor);
+        theGraphics.fillRect(20, 20, BLOCK_SIZE, BLOCK_SIZE);
+        theGraphics.fillRect(20, 20 + BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+        theGraphics.fillRect(20 + BLOCK_SIZE , 20 +BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+        theGraphics.fillRect(20 +BLOCK_SIZE *2, 20 + BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+        theGraphics.setColor(myMetalicColor);
+        theGraphics.drawRect(20, 20, BLOCK_SIZE, BLOCK_SIZE);
+        theGraphics.drawRect(20, 20 + BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+        theGraphics.drawRect(20 + BLOCK_SIZE , 20 +BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+        theGraphics.drawRect(20 +BLOCK_SIZE *2, 20 + BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+
+       
+    return theGraphics;
+       
+   }
+    public Graphics2D drawLPiece(Graphics2D theGraphics) {
+        theGraphics.setPaint(myColor);
+        theGraphics.fillRect(20, 20, BLOCK_SIZE, BLOCK_SIZE);
+        theGraphics.fillRect(20, 20 + BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+        theGraphics.fillRect(20 - BLOCK_SIZE , 20 +BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+        theGraphics.fillRect(20 - BLOCK_SIZE *2, 20 + BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+        theGraphics.setColor(myMetalicColor);
+        theGraphics.drawRect(20, 20, BLOCK_SIZE, BLOCK_SIZE);
+        theGraphics.drawRect(20, 20 + BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+        theGraphics.drawRect(20 - BLOCK_SIZE , 20 +BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+        theGraphics.drawRect(20 - BLOCK_SIZE *2, 20 + BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+
+       
+    return theGraphics;
+       
+   }
+    public Graphics2D drawTPiece(Graphics2D theGraphics) {
+        theGraphics.setPaint(myColor);
+        theGraphics.fillRect(20, 20, BLOCK_SIZE, BLOCK_SIZE);
+        theGraphics.fillRect(20, 20 + BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+        theGraphics.fillRect(20 - BLOCK_SIZE , 20 +BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+        theGraphics.fillRect(20 +BLOCK_SIZE, 20 + BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+        theGraphics.setColor(myMetalicColor);
+        theGraphics.drawRect(20, 20, BLOCK_SIZE, BLOCK_SIZE);
+        theGraphics.drawRect(20, 20 + BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+        theGraphics.drawRect(20 - BLOCK_SIZE , 20 +BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+        theGraphics.drawRect(20 + BLOCK_SIZE , 20 + BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+
+       
+    return theGraphics;
+       
+   }
+    
+    
+   
+    
+    
+    
+    
+    
+    
+    
+    @Override
+    public void paintComponent(final Graphics theGraphics) {
+        super.paintComponent(theGraphics);
+        final Graphics2D g2 = (Graphics2D) theGraphics;
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                             RenderingHints.VALUE_ANTIALIAS_ON);
+        if(myPiece != null) {
+            
+            if(myPiece.getBlock().name() == "O") {
+                drawOPiece(g2);
+            } else if(myPiece.getBlock().name() == "S") {
+                drawSPiece(g2);
+            } else if(myPiece.getBlock().name() == "Z") {
+                drawZPiece(g2);
+            }  else if(myPiece.getBlock().name() == "J") {
+                drawJPiece(g2);
+            } else if(myPiece.getBlock().name() == "L") {
+                drawLPiece(g2);
+            }  else if(myPiece.getBlock().name() == "I") {
+                drawIPiece(g2);
+            } else if(myPiece.getBlock().name() == "T") {
+                drawTPiece(g2);
+            }
+            
+        
+        }
+    }
+
+
+
+
+
+
+
+
+    public void setNextPiece(Object thePiece) {
+        
+        myPiece = (MovableTetrisPiece) thePiece;
+        System.out.println(myPiece.getBlock().toString());
+        repaint();
+        
+    }
+    
+
+}

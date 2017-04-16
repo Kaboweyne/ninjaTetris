@@ -1,0 +1,96 @@
+package view;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
+
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+public class Background extends JFrame { 
+    private NextPiece myNextPiecePanel;
+
+    public Background() {
+        setUp();
+    }
+    
+    public void setUp()
+    {
+        // Set title and default close operation
+        setTitle("Tetris");
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        
+        // Set a background for JFrame
+        setContentPane(new JLabel(new ImageIcon("./images/hokages.png")));
+        //add(new JLabel(new ImageIcon("./images/hokages_meduim.jpg")));
+        
+        // Set some layout, say FlowLayout
+       setLayout(new BorderLayout());
+        
+        
+//        // Create a JPanel
+//        
+//       final JPanel eastPanel = new JPanel();
+//       myNextPiecePanel = new NextPiece();
+//       final JPanel nextPieceWindow = new JPanel();
+//       final InstructionsPanel instructions = new InstructionsPanel();
+//       nextPieceWindow.setLayout(new BorderLayout());
+//       nextPieceWindow.add(myNextPiecePanel, BorderLayout.EAST);
+//       nextPieceWindow.setBackground(Color.GRAY);
+//       JPanel picturePanel = new JPanel();
+//       
+//       picturePanel.setPreferredSize(new Dimension(HEIGHT, WIDTH));
+//       
+//       Icon icon = new ImageIcon("./images/uwt.jpg");
+//       Icon icon2 = new ImageIcon("./images/leaves.gif");
+//       
+//       final JLabel nextPieceLabel = new JLabel();
+//       final JLabel nextPieceLabel2 = new JLabel(icon2);
+//       final JLabel nextPieceLabel3 = new JLabel(icon);
+//       //picturePanel.setBackground(Color.RED);
+//      //picturePanel.add(nextPieceLabel2);
+//       
+//       
+//       //picturePanel.setBackground(new Color(0,0,0,111));
+//       //this.add(nextPieceLabel2);
+//       nextPieceLabel.setText("Next Piece ");
+//       final int fontsize = 30;
+//       nextPieceLabel.setFont(new Font("Marker Felt", Font.BOLD, fontsize));
+//       nextPieceLabel.setForeground(Color.BLACK);
+//       //eastPanel.add(nextPieceLabel3);
+//       eastPanel.setBackground(Color.RED);
+//       eastPanel.setLayout(new GridLayout(2, 1));
+//       eastPanel.add(nextPieceWindow);
+//       eastPanel.add(instructions);
+//       eastPanel.setPreferredSize(new Dimension(300, 200));
+//       //eastPanel.setOpaque(true);
+//       //eastPanel.setPreferredSize(800, FRAME_HEIGHT);
+//       eastPanel.setBackground(new Color(0,0,0,65));
+//       add(new GamePanel());
+//      add(eastPanel, BorderLayout.EAST);
+      
+        
+        // Set the background, black with 125 as alpha value
+        // This is less transparent
+        
+        //p1.setOpaque(false);
+        // Create another JPanel
+       
+        // Set the size of the JFrame and
+        // make it visible
+        //setSize(400,222);
+        //setVisible(true);
+    }
+    public void setChoice(String theChoice) {
+        if("Medium".equals(theChoice)) {
+            setContentPane(new JLabel(new ImageIcon("./images/hokages_medium.jpg")));
+        }
+    }
+
+}

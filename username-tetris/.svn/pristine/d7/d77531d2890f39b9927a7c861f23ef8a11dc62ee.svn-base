@@ -1,0 +1,42 @@
+package view;
+
+import java.awt.Color;
+import java.awt.Dimension;
+
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+
+
+public class InstructionsPanel extends JPanel {
+    private static final String [] myInstructions = {"Instructions: ", 
+                    "To move right press the RIGHT arrow key", 
+                    "To move left press the LEFT arrow key" ,
+                    "To move down press the DOWN arrow key",
+                    "To rotate press the UP arrow key" ,
+                    "To drop the piece press the SPACEBAR key"};
+    
+    private JLabel myLabel;
+    public InstructionsPanel() {
+        setPreferredSize(new Dimension(100,100));
+        this.setBackground(Color.MAGENTA);
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        for (int i = 0; i < myInstructions.length; i++) {
+            labelMaker(myInstructions[i]);
+        }
+        
+       
+        
+    }
+    
+    private void labelMaker(String theLabel) {
+        JLabel label = new JLabel();
+        label.setText(theLabel);
+        add(label);
+       
+        
+    }
+
+}

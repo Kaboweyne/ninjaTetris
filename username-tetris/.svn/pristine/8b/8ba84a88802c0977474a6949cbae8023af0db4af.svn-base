@@ -1,0 +1,29 @@
+package view;
+
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+
+public class GUI {
+    
+    public static void main(String args []) {
+        EventQueue.invokeLater(new Runnable() {
+
+            @Override
+            public void run() {
+                
+               
+               GamePanel gamePanel =  new GamePanel();
+               gamePanel.setUp();
+               
+               //theFrame.update(o, arg);
+               
+                // TODO Auto-generated method stub
+                
+            }
+            
+        });
+    }
+
+}
